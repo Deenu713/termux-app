@@ -319,6 +319,12 @@ final class TermuxInstaller {
                     }
 					nativeLibraries = new File(context.getApplicationInfo().nativeLibraryDir);
 					
+                                        File support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
+					support.mkdirs();
+					
+					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
+					lib.mkdirs();
+	
 					//busybox
 					String bu = nativeLibraries.getAbsolutePath() + "/libbusybox.so";
 					File busybox = new File(context.getFilesDir().getAbsolutePath()   + "/home/support/bin/busybox");
