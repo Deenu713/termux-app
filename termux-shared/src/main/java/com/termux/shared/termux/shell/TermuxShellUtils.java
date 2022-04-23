@@ -84,7 +84,7 @@ public class TermuxShellUtils {
         addToEnvIfPresent(environment, "ANDROID_I18N_ROOT");
         addToEnvIfPresent(environment, "ANDROID_RUNTIME_ROOT");
         addToEnvIfPresent(environment, "ANDROID_TZDATA_ROOT");
-		environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
+		environment.add("LD_LIBRARY_PATH=" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
 		
         if (isFailSafe) {
             // Keep the default path so that system binaries can be used in the failsafe session.
