@@ -279,8 +279,8 @@ final class TermuxInstaller {
 					String sbdir = supportDir.getAbsolutePath() + "/support/bin";
 					String sldir = supportDir.getAbsolutePath() + "/support/lib";
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-              //      error = FileUtils.clearDirectory("~/support/bin", sbdir);
-				//	error = FileUtils.clearDirectory("~/support/lib", sldir);
+                    error = FileUtils.clearDirectory("~/support/bin", sbdir);
+					error = FileUtils.clearDirectory("~/support/lib", sldir);
 					
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
@@ -323,12 +323,12 @@ final class TermuxInstaller {
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
 
-					File support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
+					File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support/bin");
 					if (!support.exists() && !support.mkdirs()) {
 						throw new IOException("Failed to create bin  directory");
 					}
 
-					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
+					File lib = new File(context.getFilesDir().getAbsolutePath() + "/home/support/lib");
 					if (!lib.exists() && !lib.mkdirs()) {
 						throw new IOException("Failed to create lib directory");
 					}
