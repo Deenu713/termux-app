@@ -271,14 +271,16 @@ final class TermuxInstaller {
 
         new Thread() {
           private File support;
+          private File lib;
             public void run() {
                 try {
                     Error error;
                     File storageDir = TermuxConstants.TERMUX_STORAGE_HOME_DIR;
 
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-                    error = FileUtils.clearDirectory("~/support", support.getAbsolutePath());
-				
+                    error = FileUtils.clearDirectory("~/bin", support.getAbsolutePath());
+		    error = FileUtils.clearDirectory("~/lib", lib.getAbsolutePath());
+						
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
                         Logger.logErrorExtended(LOG_TAG, "Setup Storage Error\n" + error.toString());
@@ -325,7 +327,7 @@ final class TermuxInstaller {
 						throw new IOException("Failed to create bin  directory");
 					}
 				
-					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
+					lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
 					if (!lib.exists() && !lib.mkdirs()) {
 						throw new IOException("Failed to create lib directory");
 					}
