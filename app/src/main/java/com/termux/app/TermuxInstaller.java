@@ -279,8 +279,8 @@ final class TermuxInstaller {
 					String sbdir = supportDir.getAbsolutePath() + "/support/bin";
 					String sldir = supportDir.getAbsolutePath() + "/support/lib";
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-                    error = FileUtils.clearDirectory("~/support/bin", sbdir);
-					error = FileUtils.clearDirectory("~/support/lib", sldir);
+              //      error = FileUtils.clearDirectory("~/support/bin", sbdir);
+				//	error = FileUtils.clearDirectory("~/support/lib", sldir);
 					
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
