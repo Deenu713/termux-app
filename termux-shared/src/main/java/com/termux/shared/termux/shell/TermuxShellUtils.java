@@ -77,23 +77,23 @@ public class TermuxShellUtils {
         // EXTERNAL_STORAGE is needed for /system/bin/am to work on at least
         // Samsung S7 - see https://plus.google.com/110070148244138185604/posts/gp8Lk3aCGp3.
         environment.add("EXTERNAL_STORAGE=" + System.getenv("EXTERNAL_STORAGE"));
-    
+
         // These variables are needed if running on Android 10 and higher.
         addToEnvIfPresent(environment, "ANDROID_ART_ROOT");
         addToEnvIfPresent(environment, "DEX2OATBOOTCLASSPATH");
         addToEnvIfPresent(environment, "ANDROID_I18N_ROOT");
         addToEnvIfPresent(environment, "ANDROID_RUNTIME_ROOT");
         addToEnvIfPresent(environment, "ANDROID_TZDATA_ROOT");
-
+		environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
+		
         if (isFailSafe) {
             // Keep the default path so that system binaries can be used in the failsafe session.
             environment.add("PATH= " + System.getenv("PATH"));
-			
+
         } else {
             environment.add("LANG=en_US.UTF-8");
             environment.add("PATH=" + "/system/bin" + ":" +TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/bin");
-            environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
-
+    
             environment.add("PWD=" + workingDirectory);
             environment.add("TMPDIR=" + TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH);
         }
@@ -184,14 +184,14 @@ public class TermuxShellUtils {
             Logger.logInfo(LOG_TAG, "Not clearing termux $TMPDIR");
         } else if (days == 0) {
             error = FileUtils.clearDirectory("$TMPDIR",
-                FileUtils.getCanonicalPath(TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH, null));
+											 FileUtils.getCanonicalPath(TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH, null));
             if (error != null) {
                 Logger.logErrorExtended(LOG_TAG, "Failed to clear termux $TMPDIR\n" + error);
             }
         } else {
             error = FileUtils.deleteFilesOlderThanXDays("$TMPDIR",
-                FileUtils.getCanonicalPath(TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH, null),
-                TrueFileFilter.INSTANCE, days, true, FileTypes.FILE_TYPE_ANY_FLAGS);
+														FileUtils.getCanonicalPath(TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH, null),
+														TrueFileFilter.INSTANCE, days, true, FileTypes.FILE_TYPE_ANY_FLAGS);
             if (error != null) {
                 Logger.logErrorExtended(LOG_TAG, "Failed to delete files from termux $TMPDIR older than " + days + " days\n" + error);
             }
