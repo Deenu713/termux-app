@@ -71,8 +71,7 @@ public class TermuxShellUtils {
         environment.add("COLORTERM=truecolor");
         environment.add("HOME=" + TermuxConstants.TERMUX_HOME_DIR_PATH);
         environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
-        environment.add("PATH=" + "/system/bin" + ":" +TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/bin");
-
+ 
         environment.add("PREFIX=" + TermuxConstants.TERMUX_PREFIX_DIR_PATH);
         environment.add("BOOTCLASSPATH=" + System.getenv("BOOTCLASSPATH"));
         environment.add("ANDROID_ROOT=" + System.getenv("ANDROID_ROOT"));
