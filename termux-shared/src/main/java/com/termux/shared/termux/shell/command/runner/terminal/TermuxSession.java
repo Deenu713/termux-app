@@ -81,7 +81,7 @@ public class TermuxSession {
         boolean isLoginShell = false;
         if (executionCommand.executable == null) {
             if (!executionCommand.isFailsafe) {
-                for (String shellBinary : new String[]{"login", "bash", "zsh"}) {
+                for (String shellBinary : new String[]{"/system/bin/sh"}) {
                     File shellFile = new File(defaultBinPath, shellBinary);
                     if (shellFile.canExecute()) {
                         executionCommand.executable = shellFile.getAbsolutePath();
@@ -101,7 +101,7 @@ public class TermuxSession {
                 // https://cs.android.com/android/platform/superproject/+/android-11.0.0_r3:external/mksh/Android.bp;l=114
                 executionCommand.executable = "/system/bin/sh";
             } else {
-                isLoginShell = true;
+                isLoginShell = false;
             }
 
         }
