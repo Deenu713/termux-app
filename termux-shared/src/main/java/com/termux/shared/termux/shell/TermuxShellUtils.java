@@ -70,8 +70,6 @@ public class TermuxShellUtils {
         environment.add("TERM=xterm-256color");
         environment.add("COLORTERM=truecolor");
         environment.add("HOME=" + TermuxConstants.TERMUX_HOME_DIR_PATH);
-        environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
- 
         environment.add("PREFIX=" + TermuxConstants.TERMUX_PREFIX_DIR_PATH);
         environment.add("BOOTCLASSPATH=" + System.getenv("BOOTCLASSPATH"));
         environment.add("ANDROID_ROOT=" + System.getenv("ANDROID_ROOT"));
@@ -79,7 +77,8 @@ public class TermuxShellUtils {
         // EXTERNAL_STORAGE is needed for /system/bin/am to work on at least
         // Samsung S7 - see https://plus.google.com/110070148244138185604/posts/gp8Lk3aCGp3.
         environment.add("EXTERNAL_STORAGE=" + System.getenv("EXTERNAL_STORAGE"));
-
+        environment.add("LD_LIBRARY_PATH" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
+ 
         // These variables are needed if running on Android 10 and higher.
         addToEnvIfPresent(environment, "ANDROID_ART_ROOT");
         addToEnvIfPresent(environment, "DEX2OATBOOTCLASSPATH");
@@ -93,7 +92,7 @@ public class TermuxShellUtils {
 			
         } else {
             environment.add("LANG=en_US.UTF-8");
-            environment.add("PATH=" + "/system/bin" + ":" +TermuxConstants.TERMUX_HOME_DIR_PATH + "/bin");
+            environment.add("PATH=" + "/system/bin" + ":" +TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/bin");
             environment.add("PWD=" + workingDirectory);
             environment.add("TMPDIR=" + TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH);
         }
