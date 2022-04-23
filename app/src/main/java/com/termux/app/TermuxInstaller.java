@@ -270,13 +270,15 @@ final class TermuxInstaller {
         Logger.logInfo(LOG_TAG, "Setting up storage symlinks.");
 
         new Thread() {
-
+          private File support;
             public void run() {
                 try {
                     Error error;
                     File storageDir = TermuxConstants.TERMUX_STORAGE_HOME_DIR;
 
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
+                    error = FileUtils.clearDirectory("~/support", support.getAbsolutePath());
+				
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
                         Logger.logErrorExtended(LOG_TAG, "Setup Storage Error\n" + error.toString());
@@ -318,18 +320,18 @@ final class TermuxInstaller {
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
 					
-					File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support/bin");
+					support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
 					if (!support.exists() && !support.mkdirs()) {
 						throw new IOException("Failed to create bin  directory");
 					}
 				
-					File lib = new File(context.getFilesDir().getAbsolutePath() + "/home/support/lib");
+					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
 					if (!lib.exists() && !lib.mkdirs()) {
 						throw new IOException("Failed to create lib directory");
 					}
 				
 					
-					
+					//busybox
 					File libbusybox = new File(context.getApplicationInfo().nativeLibraryDir  + "/libbusybox.so");
 					String bu = libbusybox.getAbsolutePath();
 					
@@ -337,6 +339,24 @@ final class TermuxInstaller {
 					String bx = busybox.getAbsolutePath();
 					
 				    Os.symlink(bu, bx);	
+					
+					//proot
+					File libproot = new File(context.getApplicationInfo().nativeLibraryDir  + "/libproot.so");
+					String pu = libproot.getAbsolutePath();
+
+					File proot = new File(support.getAbsolutePath()+ "/proot");
+					String pt = proot.getAbsolutePath();
+
+				    Os.symlink(pu, pt);	
+					
+					//talloc
+					File libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/libtalloc.so.2.so");
+					String ta = libtalloc.getAbsolutePath();
+
+					File talloc = new File(lib.getAbsolutePath()+ "/libtalloc.so.2");
+					String tc = talloc.getAbsolutePath();
+
+				    Os.symlink(ta, tc);	
 					
                     // Dir 0 should ideally be for primary storage
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/app/ContextImpl.java;l=818
