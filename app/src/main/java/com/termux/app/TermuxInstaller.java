@@ -78,8 +78,8 @@ final class TermuxInstaller {
             Logger.logError(LOG_TAG, bootstrapErrorMessage);
             sendBootstrapCrashReportNotification(activity, bootstrapErrorMessage);
             MessageDialogUtils.exitAppWithErrorMessage(activity,
-                activity.getString(R.string.bootstrap_error_title),
-                bootstrapErrorMessage);
+													   activity.getString(R.string.bootstrap_error_title),
+													   bootstrapErrorMessage);
             return;
         }
 
@@ -88,8 +88,8 @@ final class TermuxInstaller {
             Logger.logError(LOG_TAG, bootstrapErrorMessage);
             sendBootstrapCrashReportNotification(activity, bootstrapErrorMessage);
             MessageDialogUtils.showMessage(activity,
-                activity.getString(R.string.bootstrap_error_title),
-                bootstrapErrorMessage, null);
+										   activity.getString(R.string.bootstrap_error_title),
+										   bootstrapErrorMessage, null);
             return;
         }
 
@@ -238,14 +238,14 @@ final class TermuxInstaller {
             try {
                 new AlertDialog.Builder(activity).setTitle(R.string.bootstrap_error_title).setMessage(R.string.bootstrap_error_body)
                     .setNegativeButton(R.string.bootstrap_error_abort, (dialog, which) -> {
-                        dialog.dismiss();
-                        activity.finish();
-                    })
-                    .setPositiveButton(R.string.bootstrap_error_try_again, (dialog, which) -> {
-                        dialog.dismiss();
-                        FileUtils.deleteFile("termux prefix directory", TERMUX_PREFIX_DIR_PATH, true);
-                        TermuxInstaller.setupBootstrapIfNeeded(activity, whenDone);
-                    }).show();
+					dialog.dismiss();
+					activity.finish();
+				})
+				.setPositiveButton(R.string.bootstrap_error_try_again, (dialog, which) -> {
+					dialog.dismiss();
+					FileUtils.deleteFile("termux prefix directory", TERMUX_PREFIX_DIR_PATH, true);
+					TermuxInstaller.setupBootstrapIfNeeded(activity, whenDone);
+				}).show();
             } catch (WindowManager.BadTokenException e1) {
                 // Activity already dismissed - ignore.
             }
@@ -258,9 +258,9 @@ final class TermuxInstaller {
         // Add info of all install Termux plugin apps as well since their target sdk or installation
         // on external/portable sd card can affect Termux app files directory access or exec.
         TermuxCrashUtils.sendCrashReportNotification(activity, LOG_TAG,
-            title, null, "## " + title + "\n\n" + message + "\n\n" +
-                TermuxUtils.getTermuxDebugMarkdownString(activity),
-            true, false, TermuxUtils.AppInfoMode.TERMUX_AND_PLUGIN_PACKAGES, true);
+													 title, null, "## " + title + "\n\n" + message + "\n\n" +
+													 TermuxUtils.getTermuxDebugMarkdownString(activity),
+													 true, false, TermuxUtils.AppInfoMode.TERMUX_AND_PLUGIN_PACKAGES, true);
     }
 
     static void setupStorageSymlinks(final Context context) {
@@ -270,23 +270,22 @@ final class TermuxInstaller {
         Logger.logInfo(LOG_TAG, "Setting up storage symlinks.");
 
         new Thread() {
-          private File support;
-          private File lib;
+			
             public void run() {
                 try {
                     Error error;
                     File storageDir = TermuxConstants.TERMUX_STORAGE_HOME_DIR;
-
+					File supportDir = TermuxConstants.TERMUX_HOME_DIR;
+					String sdir = supportDir.getAbsolutePath() + "/support";
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-                    error = FileUtils.clearDirectory("~/bin", support.getAbsolutePath());
-		    error = FileUtils.clearDirectory("~/lib", lib.getAbsolutePath());
-						
+                    error = FileUtils.clearDirectory("~/support", sdir);
+					
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
                         Logger.logErrorExtended(LOG_TAG, "Setup Storage Error\n" + error.toString());
                         TermuxCrashUtils.sendCrashReportNotification(context, LOG_TAG, title, null,
-                            "## " + title + "\n\n" + Error.getErrorMarkdownString(error),
-                            true, false, TermuxUtils.AppInfoMode.TERMUX_PACKAGE, true);
+																	 "## " + title + "\n\n" + Error.getErrorMarkdownString(error),
+																	 true, false, TermuxUtils.AppInfoMode.TERMUX_PACKAGE, true);
                         return;
                     }
 
@@ -321,27 +320,27 @@ final class TermuxInstaller {
                         File audiobooksDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_AUDIOBOOKS);
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
-					
-					support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
+
+					File support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
 					if (!support.exists() && !support.mkdirs()) {
 						throw new IOException("Failed to create bin  directory");
 					}
-				
-					lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
+
+					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
 					if (!lib.exists() && !lib.mkdirs()) {
 						throw new IOException("Failed to create lib directory");
 					}
-				
-					
+
+
 					//busybox
 					File libbusybox = new File(context.getApplicationInfo().nativeLibraryDir  + "/libbusybox.so");
 					String bu = libbusybox.getAbsolutePath();
-					
+
 					File busybox = new File(support.getAbsolutePath()+ "/busybox");
 					String bx = busybox.getAbsolutePath();
-					
+
 				    Os.symlink(bu, bx);	
-					
+
 					//proot
 					File libproot = new File(context.getApplicationInfo().nativeLibraryDir  + "/libproot.so");
 					String pu = libproot.getAbsolutePath();
@@ -350,7 +349,7 @@ final class TermuxInstaller {
 					String pt = proot.getAbsolutePath();
 
 				    Os.symlink(pu, pt);	
-					
+
 					//talloc
 					File libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/libtalloc.so.2.so");
 					String ta = libtalloc.getAbsolutePath();
@@ -359,7 +358,7 @@ final class TermuxInstaller {
 					String tc = talloc.getAbsolutePath();
 
 				    Os.symlink(ta, tc);	
-					
+
                     // Dir 0 should ideally be for primary storage
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/app/ContextImpl.java;l=818
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/os/Environment.java;l=219
@@ -396,8 +395,8 @@ final class TermuxInstaller {
                     Logger.logErrorAndShowToast(context, LOG_TAG, e.getMessage());
                     Logger.logStackTraceWithMessage(LOG_TAG, "Setup Storage Error: Error setting up link", e);
                     TermuxCrashUtils.sendCrashReportNotification(context, LOG_TAG, title, null,
-                        "## " + title + "\n\n" + Logger.getStackTracesMarkdownString(null, Logger.getStackTracesStringArray(e)),
-                        true, false, TermuxUtils.AppInfoMode.TERMUX_PACKAGE, true);
+																 "## " + title + "\n\n" + Logger.getStackTracesMarkdownString(null, Logger.getStackTracesStringArray(e)),
+																 true, false, TermuxUtils.AppInfoMode.TERMUX_PACKAGE, true);
                 }
             }
         }.start();
