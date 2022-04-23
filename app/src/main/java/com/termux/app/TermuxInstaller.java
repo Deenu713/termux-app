@@ -276,9 +276,11 @@ final class TermuxInstaller {
                     Error error;
                     File storageDir = TermuxConstants.TERMUX_STORAGE_HOME_DIR;
 					File supportDir = TermuxConstants.TERMUX_HOME_DIR;
-					String sdir = supportDir.getAbsolutePath() + "/support";
+					String sbdir = supportDir.getAbsolutePath() + "/support/bin";
+					String sldir = supportDir.getAbsolutePath() + "/support/lib";
                     error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-                    error = FileUtils.clearDirectory("~/support", sdir);
+                    error = FileUtils.clearDirectory("~/support/bin", sbdir);
+					error = FileUtils.clearDirectory("~/support/lib", sldir);
 					
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
