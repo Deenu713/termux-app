@@ -269,6 +269,8 @@ final class TermuxInstaller {
         Logger.logInfo(LOG_TAG, "Setting up storage symlinks.");
 
         new Thread() {
+
+			private File nativeLibraries;
             public void run() {
                 try {
                     Error error;
@@ -315,7 +317,26 @@ final class TermuxInstaller {
                         File audiobooksDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_AUDIOBOOKS);
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
-
+					nativeLibraries = new File(context.getApplicationInfo().nativeLibraryDir);
+					
+					//busybox
+					String bu = nativeLibraries.getAbsolutePath() + "/libbusybox.so";
+					File busybox = new File(context.getFilesDir().getAbsolutePath()   + "/home/support/bin/busybox");
+				    String b = busybox.getAbsolutePath();
+				    Os.symlink(bu, b);
+					
+					//proot
+					String pr = nativeLibraries.getAbsolutePath() + "/libproot.so";
+					File proot = new File(context.getFilesDir().getAbsolutePath()   + "/home/support/bin/proot");
+				    String p = proot.getAbsolutePath();
+				    Os.symlink(pr, p);
+					
+                   //talloc
+					String ta = nativeLibraries.getAbsolutePath() + "/libtalloc.so.2.so";
+					File talloc = new File(context.getFilesDir().getAbsolutePath()   + "/home/support/lib/libtalloc.so.2");
+				    String t = talloc.getAbsolutePath();
+				    Os.symlink(ta, t);
+					
                     // Dir 0 should ideally be for primary storage
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/app/ContextImpl.java;l=818
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/os/Environment.java;l=219
