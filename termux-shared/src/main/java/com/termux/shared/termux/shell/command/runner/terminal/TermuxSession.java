@@ -76,12 +76,12 @@ public class TermuxSession {
 
         String defaultBinPath = shellEnvironmentClient.getDefaultBinPath();
         if (defaultBinPath.isEmpty())
-            defaultBinPath = "/system/bin";
+            defaultBinPath = "/data/data/com.termux/files/home/support/bin";
 
         boolean isLoginShell = false;
         if (executionCommand.executable == null) {
             if (!executionCommand.isFailsafe) {
-                for (String shellBinary : new String[]{"/system/bin/sh"}) {
+                for (String shellBinary : new String[]{"/data/data/com.termux/files/home/support/bin/busybox sh"}) {
                     File shellFile = new File(defaultBinPath, shellBinary);
                     if (shellFile.canExecute()) {
                         executionCommand.executable = shellFile.getAbsolutePath();
@@ -99,7 +99,7 @@ public class TermuxSession {
                 // https://cs.android.com/android/platform/superproject/+/android-11.0.0_r3:external/mksh/src/main.c;l=663
                 // https://cs.android.com/android/platform/superproject/+/android-11.0.0_r3:external/mksh/src/main.c;l=41
                 // https://cs.android.com/android/platform/superproject/+/android-11.0.0_r3:external/mksh/Android.bp;l=114
-                executionCommand.executable = "/system/bin/sh";
+                executionCommand.executable = "/data/data/com.termux/files/home/support/bin/busybox sh";
             } else {
                 isLoginShell = false;
             }
