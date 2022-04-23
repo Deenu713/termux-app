@@ -318,12 +318,12 @@ final class TermuxInstaller {
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
 					
-					File support = new File(context.getFilesDir().getAbsolutePath() + "home/support/bin");
+					File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support/bin");
 					if (!support.exists() && !support.mkdirs()) {
 						throw new IOException("Failed to create bin  directory");
 					}
 				
-					File lib = new File(context.getFilesDir().getAbsolutePath() + "home/support/lib");
+					File lib = new File(context.getFilesDir().getAbsolutePath() + "/home/support/lib");
 					if (!lib.exists() && !lib.mkdirs()) {
 						throw new IOException("Failed to create lib directory");
 					}
