@@ -36,6 +36,7 @@ import static com.termux.shared.termux.TermuxConstants.TERMUX_PREFIX_DIR_PATH;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR_PATH;
 import java.io.IOException;
+import com.termux.app.UlaFiles;
 /**
  * Install the Termux bootstrap packages if necessary by following the below steps:
  * <p/>
