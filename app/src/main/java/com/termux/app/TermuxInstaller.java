@@ -36,7 +36,6 @@ import static com.termux.shared.termux.TermuxConstants.TERMUX_PREFIX_DIR_PATH;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR_PATH;
 import java.io.IOException;
-import com.termux.app.UlaFiles;
 /**
  * Install the Termux bootstrap packages if necessary by following the below steps:
  * <p/>
@@ -270,7 +269,7 @@ final class TermuxInstaller {
         Logger.logInfo(LOG_TAG, "Setting up storage symlinks.");
 
         new Thread() {
-			private UlaFiles ulaFiles;
+			
             public void run() {
                 try {
 					
@@ -328,71 +327,292 @@ final class TermuxInstaller {
 					
 				File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support");
 					if (!support.exists() && !support.mkdirs()) {
-						throw new IOException("Failed to create bin  directory");
+						throw new IOException("Failed to create support  directory");
 					}
-					ulaFiles.setupLinks();
-			/*	
+					File common = new File(context.getFilesDir().getAbsolutePath() + "/home/support/common");
+					if (!common.exists() && !common.mkdirs()) {
+						throw new IOException("Failed to create common  directory");
+					}
+					
+			
 			        //lib_addNonRootUser.sh.so
+					File lib_addNonRootUser = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_addNonRootUser.sh.so");
+					String nru = lib_addNonRootUser.getAbsolutePath();
+
+					File nruf = new File(support.getAbsolutePath()+ "/addNonRootUser.sh");
+					String nrus = nruf.getAbsolutePath();
+
+				    Os.symlink(nru, nrus);	
+					
 					//lib_arch.so
-					//lib_busybox.so
+					File lib_arch = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_arch.so");
+					String arm = lib_arch.getAbsolutePath();
+
+					File aarch = new File(support.getAbsolutePath()+ "/arch");
+					String arms = aarch.getAbsolutePath();
+
+					Os.symlink(arm, arms);	
+					
+					//lib_busybox.so		 
+					File lib_busybox = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_busybox.so");
+					String bu = lib_busybox.getAbsolutePath();
+
+					 File busybox = new File(support.getAbsolutePath()+ "/busybox");
+					 String bx = busybox.getAbsolutePath();
+
+					 Os.symlink(bu, bx);	
+					 
 					//lib_busybox_static.so
+					File lib_busybox_static = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_busybox_static.so");
+					String bus = lib_busybox_static.getAbsolutePath();
+
+					File busyboxs = new File(common.getAbsolutePath()+ "/busybox_static");
+					String bxs = busyboxs.getAbsolutePath();
+
+					Os.symlink(bus, bxs);	
+					
 					// lib_compressFilesystem.sh.so
+					File lib_compressFilesystem = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_compressFilesystem.sh.so");
+					String compressFilesystem = lib_compressFilesystem.getAbsolutePath();
+
+					File Filesystem = new File(support.getAbsolutePath()+ "/compressFilesystem.sh");
+					String filex = Filesystem.getAbsolutePath();
+
+				    Os.symlink(compressFilesystem, filex);	
+					
 					//lib_dbclient.so 
+					File lib_dbclient = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_dbclient.so");
+					String lbs = lib_dbclient.getAbsolutePath();
+
+					File bsl = new File(support.getAbsolutePath()+ "/dbclient");
+					String ph = bsl.getAbsolutePath();
+
+				    Os.symlink(lbs, ph);	
+					
 					//lib_deleteFilesystem.sh.so
+					File lib_deleteFilesystem = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_deleteFilesystem.sh.so");
+					String dls = lib_deleteFilesystem.getAbsolutePath();
+
+					File deleteFilesystem = new File(support.getAbsolutePath()+ "/deleteFilesystem.sh");
+					String dlf = deleteFilesystem.getAbsolutePath();
+
+				    Os.symlink(dls, dlf);	
+					
 					//lib_execInProot.sh.so
+					File lib_execInProot = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_execInProot.sh.so");
+					String exe = lib_execInProot.getAbsolutePath();
+
+					File xecInProot = new File(support.getAbsolutePath()+ "/execInProot.sh");
+					String xp= xecInProot.getAbsolutePath();
+
+				    Os.symlink(exe, xp);	
+					
 					//lib_extractFilesystem.sh.so
+					File lib_extractFilesystem = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_extractFilesystem.sh.so");
+					String fex = lib_extractFilesystem.getAbsolutePath();
+
+					File fes = new File(support.getAbsolutePath()+ "/extractFilesystem.sh");
+					String ts = fes.getAbsolutePath();
+
+				    Os.symlink(fex, ts);	
+					
 					//lib_isServerInProcTree.sh.so
+					File lib_isServerInProcTree = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_isServerInProcTree.sh.so");
+					String sp = lib_isServerInProcTree.getAbsolutePath();
+
+					File spt = new File(support.getAbsolutePath()+ "/isServerInProcTree.sh");
+					String sy = spt.getAbsolutePath();
+
+				    Os.symlink(sp, sy);	
+					
 					//lib_killProcTree.sh.so 
+					File lib_killProcTree = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_killProcTree.sh.so");
+					String kpt = lib_killProcTree.getAbsolutePath();
+
+					File kps = new File(support.getAbsolutePath()+ "/killProcTree.sh");
+					String bt = kps.getAbsolutePath();
+
+				    Os.symlink(kpt, bt);	
+					
 					//lib_libc++_shared.so.so 
+					File lib_libc = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libc++_shared.so.so");
+					String libs = lib_libc.getAbsolutePath();
+
+					File libcc = new File(support.getAbsolutePath()+ "/libc++_shared.so");
+					String kst = libcc.getAbsolutePath();
+
+				    Os.symlink(libs, kst);	
+					
 			    	//lib_libcrypto.so.1.1.so 
+					File lib_libcrypto = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libcrypto.so.1.1.so");
+					String lc = lib_libcrypto.getAbsolutePath();
+
+					File lcr = new File(support.getAbsolutePath()+ "/libcrypto.so.1.1");
+					String lo = lcr.getAbsolutePath();
+
+				    Os.symlink(lc, lo);	
+					
 					//lib_libleveldb.so.1.so
+					File lib_libleveldb = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libleveldb.1.so");
+					String lvd = lib_libleveldb.getAbsolutePath();
+
+					File lvdh = new File(support.getAbsolutePath()+ "/libleveldb.so.1");
+					String libv = lvdh.getAbsolutePath();
+
+				    Os.symlink(lvd, libv);	
+					
 					//lib_libtalloc.so.2.a10.so 
+					File ib_libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libtalloc.so.2.a10.so");
+					String lto = ib_libtalloc.getAbsolutePath();
+
+					File lts = new File(support.getAbsolutePath()+ "/libtalloc.so.2.a10 ");
+					String lsk = lts.getAbsolutePath();
+
+				    Os.symlink(lto, lsk);	
+					
 					//lib_libtalloc.so.2.so
+					File lib_libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libtalloc.so.2.so");
+					String ta = lib_libtalloc.getAbsolutePath();
+
+					File talloc = new File(support.getAbsolutePath()+ "/libtalloc.so.2");
+					String tc = talloc.getAbsolutePath();
+
+				    Os.symlink(ta, tc);	
+					
 					//lib_libtermux-auth.so.so
+					File lib_libtermux = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libtermux-auth.so.so");
+					String lter = lib_libtermux.getAbsolutePath();
+
+					File ltermi = new File(support.getAbsolutePath()+ "/libtermux-auth.so");
+					String tez = ltermi.getAbsolutePath();
+
+				    Os.symlink(lter, tez);	
+					
 					//lib_libutil.so.so
+					File lib_libutil = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libutil.so.so");
+					String ut = lib_libutil.getAbsolutePath();
+
+					File util = new File(support.getAbsolutePath()+ "/libutil.so");
+					String uts = util.getAbsolutePath();
+
+				    Os.symlink(ut, uts);	
+					
 					//lib_loader.so
+					File lib_loader = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_loader.so");
+					String loa = lib_loader.getAbsolutePath();
+
+					File load = new File(support.getAbsolutePath()+ "/loader");
+					String lod = load.getAbsolutePath();
+
+				    Os.symlink(loa, lod);	
+					
 					// lib_loader.a10.so
+					File lo1 = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_loader.a10.so");
+					String los = lo1.getAbsolutePath();
+
+					File lo2 = new File(support.getAbsolutePath()+ "/loader.a10");
+					String los2 = lo2.getAbsolutePath();
+
+				    Os.symlink(los, los2);	
+					
 					//lib_loader32.a10.so
+					File ader32 = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_loader32.a10.so");
+					String puader32 = ader32.getAbsolutePath();
+
+					File ader3 = new File(support.getAbsolutePath()+ "/loader32.a10");
+					String ader = ader3.getAbsolutePath();
+
+				    Os.symlink(puader32, ader);	
+					
 					// lib_loader32.so
+					File qq = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_loader32.so");
+					String qs = qq.getAbsolutePath();
+
+					File qa = new File(support.getAbsolutePath()+ "/loader32");
+					String qd = qa.getAbsolutePath();
+
+				    Os.symlink(qs, qd);	
+					
 					// lib_proot.a10.so
+					File ww = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_proot.a10.so");
+					String wb = ww.getAbsolutePath();
+
+					File wh = new File(support.getAbsolutePath()+ "/proot.a10");
+					String wk = wh.getAbsolutePath();
+
+				    Os.symlink(wb, wk);	
+					
 					// lib_proot.so
-					//lib_proot_meta.so
-					//lib_proot_meta_leveldb.so
-					//lib_stat4.so
-					//lib_stat8.so 
-					//lib_stat8.so
-					//lib_uptime.so
-					// libtermux.so
-		
-
-					//busybox
-					File libbusybox = new File(context.getApplicationInfo().nativeLibraryDir  + "/libbusybox.so");
-					String bu = libbusybox.getAbsolutePath();
-
-					File busybox = new File(support.getAbsolutePath()+ "/busybox");
-					String bx = busybox.getAbsolutePath();
-
-				    Os.symlink(bu, bx);	
-
-					//proot
-					File libproot = new File(context.getApplicationInfo().nativeLibraryDir  + "/libproot.so");
-					String pu = libproot.getAbsolutePath();
+					File lib_proot = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_proot.so");
+					String pu = lib_proot.getAbsolutePath();
 
 					File proot = new File(support.getAbsolutePath()+ "/proot");
 					String pt = proot.getAbsolutePath();
 
 				    Os.symlink(pu, pt);	
+					
+					//lib_proot_meta.so
+					File lib_prootm = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_proot_meta.so");
+					String pum = lib_prootm.getAbsolutePath();
 
-					//talloc
-					File libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/libtalloc.so.2.so");
-					String ta = libtalloc.getAbsolutePath();
+					File prootm = new File(support.getAbsolutePath()+ "/proot_meta");
+					String put = prootm.getAbsolutePath();
 
-					File talloc = new File(lib.getAbsolutePath()+ "/libtalloc.so.2");
-					String tc = talloc.getAbsolutePath();
+				    Os.symlink(pum, put);	
+					
+					//lib_proot_meta_leveldb.so
+					File lib_prootml = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_proot_meta_leveldb.so");
+					String puml = lib_prootml.getAbsolutePath();
 
-				    Os.symlink(ta, tc);	
-					*/
+					File prootmls = new File(support.getAbsolutePath()+ "/proot_meta_leveldb");
+					String ptml = prootmls.getAbsolutePath();
 
+				    Os.symlink(puml, ptml);	
+					
+					//lib_stat4.so
+					File lib_stat4 = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_stat4.so");
+					String stat4 = lib_stat4.getAbsolutePath();
+
+					File st4 = new File(support.getAbsolutePath()+ "/stat4");
+					String st4s = st4.getAbsolutePath();
+
+				    Os.symlink(stat4, st4s);	
+					
+					
+					//lib_stat8.so
+					File lib_stat8 = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_stat8.so");
+					String lib_stat = lib_stat8.getAbsolutePath();
+
+					File lib_st = new File(support.getAbsolutePath()+ "/stat8");
+					String lib_s = lib_st.getAbsolutePath();
+
+				    Os.symlink(lib_stat, lib_s);	
+					
+					//lib_uptime.so
+					File lib_uptime = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_uptime.so");
+					String lib_upt = lib_uptime.getAbsolutePath();
+
+					File lib_up = new File(support.getAbsolutePath()+ "/uptime");
+					String lib_u = lib_up.getAbsolutePath();
+
+				    Os.symlink(lib_upt, lib_u);	
+					
+					// libtermux.so
+					File libtermux = new File(context.getApplicationInfo().nativeLibraryDir  + "/libtermux.so");
+					String termux = libtermux.getAbsolutePath();
+
+					File libterm = new File(support.getAbsolutePath()+ "/libtermux");
+					String libt = libterm.getAbsolutePath();
+
+				    Os.symlink(termux,libt);	
+		
+
+					
+
+					
+			
+					
+					
                     // Dir 0 should ideally be for primary storage
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/app/ContextImpl.java;l=818
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/os/Environment.java;l=219
@@ -435,8 +655,8 @@ final class TermuxInstaller {
             }
         }.start();
     }
-
-    private static Error ensureDirectoryExists(File directory) {
+	
+   private static Error ensureDirectoryExists(File directory) {
         return FileUtils.createDirectoryFile(directory.getAbsolutePath());
     }
 
