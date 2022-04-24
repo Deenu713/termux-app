@@ -84,7 +84,7 @@ public class TermuxShellUtils {
         addToEnvIfPresent(environment, "ANDROID_I18N_ROOT");
         addToEnvIfPresent(environment, "ANDROID_RUNTIME_ROOT");
         addToEnvIfPresent(environment, "ANDROID_TZDATA_ROOT");
-		environment.add("LD_LIBRARY_PATH=" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/lib");
+		environment.add("LD_LIBRARY_PATH=" + TermuxConstants.TERMUX_HOME_DIR_PATH + "/support");
 		
         if (isFailSafe) {
             // Keep the default path so that system binaries can be used in the failsafe session.
@@ -92,10 +92,10 @@ public class TermuxShellUtils {
 
         } else {
             environment.add("LANG=en_US.UTF-8");
-            environment.add("PATH=" + "/system/bin" + ":" +TermuxConstants.TERMUX_HOME_DIR_PATH + "/support/bin");
+            environment.add("PATH=" + "/system/bin" );
     
             environment.add("PWD=" + workingDirectory);
-            environment.add("TMPDIR=" + TermuxConstants.TERMUX_TMP_PREFIX_DIR_PATH);
+            environment.add("TMPDIR=" + currentPackageContext.getCacheDir().getAbsolutePath());
         }
 
         return environment.toArray(new String[0]);
