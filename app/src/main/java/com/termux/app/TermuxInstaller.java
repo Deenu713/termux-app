@@ -465,7 +465,7 @@ final class TermuxInstaller {
 					File ib_libtalloc = new File(context.getApplicationInfo().nativeLibraryDir  + "/lib_libtalloc.so.2.a10.so");
 					String lto = ib_libtalloc.getAbsolutePath();
 
-					File lts = new File(support.getAbsolutePath()+ "/libtalloc.so.2.a10 ");
+					File lts = new File(support.getAbsolutePath()+ "/libtalloc.so.2.a10");
 					String lsk = lts.getAbsolutePath();
 
 				    Os.symlink(lto, lsk);	
