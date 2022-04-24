@@ -36,7 +36,8 @@ import static com.termux.shared.termux.TermuxConstants.TERMUX_PREFIX_DIR_PATH;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR;
 import static com.termux.shared.termux.TermuxConstants.TERMUX_STAGING_PREFIX_DIR_PATH;
 import java.io.IOException;
-
+import  k.t.UlaFiles;
+import k.t.Symlinker;
 /**
  * Install the Termux bootstrap packages if necessary by following the below steps:
  * <p/>
@@ -270,18 +271,18 @@ final class TermuxInstaller {
         Logger.logInfo(LOG_TAG, "Setting up storage symlinks.");
 
         new Thread() {
-			
+			private UlaFiles ulaFiles;
             public void run() {
                 try {
+					
                     Error error;
                     File storageDir = TermuxConstants.TERMUX_STORAGE_HOME_DIR;
 					File supportDir = TermuxConstants.TERMUX_HOME_DIR;
-					String sbdir = supportDir.getAbsolutePath() + "/support/bin";
-					String sldir = supportDir.getAbsolutePath() + "/support/lib";
-                    error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
-                    error = FileUtils.clearDirectory("~/support/bin", sbdir);
-					error = FileUtils.clearDirectory("~/support/lib", sldir);
+					String sbdir = supportDir.getAbsolutePath() + "/support";
 					
+					error = FileUtils.clearDirectory("~/storage", storageDir.getAbsolutePath());
+                    error = FileUtils.clearDirectory("~/support", sbdir);
+				
                     if (error != null) {
                         Logger.logErrorAndShowToast(context, LOG_TAG, error.getMessage());
                         Logger.logErrorExtended(LOG_TAG, "Setup Storage Error\n" + error.toString());
@@ -323,16 +324,47 @@ final class TermuxInstaller {
                         Os.symlink(audiobooksDir.getAbsolutePath(), new File(storageDir, "audiobooks").getAbsolutePath());
                     }
 
-					File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support/bin");
+					
+					
+					
+				File support = new File(context.getFilesDir().getAbsolutePath() + "/home/support");
 					if (!support.exists() && !support.mkdirs()) {
 						throw new IOException("Failed to create bin  directory");
 					}
-
-					File lib = new File(context.getFilesDir().getAbsolutePath() + "/home/support/lib");
-					if (!lib.exists() && !lib.mkdirs()) {
-						throw new IOException("Failed to create lib directory");
-					}
-
+					ulaFiles.setupLinks();
+			/*	
+			        //lib_addNonRootUser.sh.so
+					//lib_arch.so
+					//lib_busybox.so
+					//lib_busybox_static.so
+					// lib_compressFilesystem.sh.so
+					//lib_dbclient.so 
+					//lib_deleteFilesystem.sh.so
+					//lib_execInProot.sh.so
+					//lib_extractFilesystem.sh.so
+					//lib_isServerInProcTree.sh.so
+					//lib_killProcTree.sh.so 
+					//lib_libc++_shared.so.so 
+			    	//lib_libcrypto.so.1.1.so 
+					//lib_libleveldb.so.1.so
+					//lib_libtalloc.so.2.a10.so 
+					//lib_libtalloc.so.2.so
+					//lib_libtermux-auth.so.so
+					//lib_libutil.so.so
+					//lib_loader.so
+					// lib_loader.a10.so
+					//lib_loader32.a10.so
+					// lib_loader32.so
+					// lib_proot.a10.so
+					// lib_proot.so
+					//lib_proot_meta.so
+					//lib_proot_meta_leveldb.so
+					//lib_stat4.so
+					//lib_stat8.so 
+					//lib_stat8.so
+					//lib_uptime.so
+					// libtermux.so
+		
 
 					//busybox
 					File libbusybox = new File(context.getApplicationInfo().nativeLibraryDir  + "/libbusybox.so");
@@ -360,6 +392,7 @@ final class TermuxInstaller {
 					String tc = talloc.getAbsolutePath();
 
 				    Os.symlink(ta, tc);	
+					*/
 
                     // Dir 0 should ideally be for primary storage
                     // https://cs.android.com/android/platform/superproject/+/android-12.0.0_r32:frameworks/base/core/java/android/app/ContextImpl.java;l=818
