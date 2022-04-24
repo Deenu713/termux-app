@@ -1,4 +1,4 @@
-package com.termux
+package com.termux.app
 
 import android.content.Context
 import android.os.Build
