@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+     id "kotlin-android"
 }
 
 android {
@@ -23,7 +24,7 @@ implementation fileTree(dir: "libs", include: ["*.jar"])
         implementation "io.noties.markwon:ext-strikethrough:$markwonVersion"
         implementation "io.noties.markwon:linkify:$markwonVersion"
         implementation "io.noties.markwon:recycler:$markwonVersion"
-
+implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.21'
         implementation project(":terminal-view")
         implementation project(":termux-shared")
     }
